@@ -7,10 +7,13 @@ import { productsSuccess, productsFailure, loading } from '../actions';
 function* _productsSaga(action) {
     yield put(loading(true));
 
+    console.log(action);
+
+    /* eslint-disable no-mixed-operators */
     const current = {
-        limit: action.limit || 20,
-        skip: action.skip || 0,
-        sort: action.sort || 'id'
+        limit: action.payload && action.payload.limit || 20,
+        skip: action.payload && action.payload.skip || 0,
+        sort: action.payload && action.payload.sort || 'id'
     };
 
     try {

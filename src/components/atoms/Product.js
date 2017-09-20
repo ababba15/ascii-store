@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 export const Product = (props) => (
     <div className="product-card">
-        <h1>Product here!</h1>
-        <p style={{ fontSize: props.size }}>{props.face}</p>
+        <p style={{ fontSize: props.size, minHeight: '150px' }}>{props.face}</p>
+        <p>{props.price}</p>
     </div>
 );
