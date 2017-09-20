@@ -5,19 +5,14 @@ import { baseUrl, serializeData } from '../utils';
 import { productsSuccess, productsFailure, loading } from '../actions';
 
 function* _productsSaga(action) {
-    yield put(loading(true));
+    const defaultPayload = { limit: 20, skip: 0, sort: 'id', withLoading: false  };
+    const payload = { ...defaultPayload, ...action.payload };
 
-    console.log(action);
-
-    /* eslint-disable no-mixed-operators */
-    const current = {
-        limit: action.payload && action.payload.limit || 20,
-        skip: action.payload && action.payload.skip || 0,
-        sort: action.payload && action.payload.sort || 'id'
-    };
+    yield put(loading(payload.withLoading));
 
     try {
-        const rawResponse = yield call(axios.get, `${baseUrl}/api/products?limit=${current.limit}&sort=${current.sort}&skip=${current.skip}`);
+        // const rawResponse = yield call(axios.get, `${baseUrl}/api/products?limit=${payload.limit}&sort=${payload.sort}&skip=${payload.skip}`);
+        const rawResponse = yield call(axios.get, `${baseUrl}/api/products`, { params: payload });
         const serializedData = yield call(serializeData, rawResponse.data);
         yield put(productsSuccess(serializedData));
     } catch (error) {

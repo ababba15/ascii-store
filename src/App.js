@@ -10,20 +10,55 @@ import { Product } from './components';
 
 
 class App extends Component {
-    componentDidMount() {
-        const { dispatch } = this.props;
-        dispatch(productsRequest());
-
-        window.onscroll = function(ev) {
-            if ((window.innerHeight + window.scrollY) === document.body.offsetHeight - 100) {
-                console.log('hello bottom!');
-            }
+    constructor() {
+        super();
+        this.state = {
+            limit: 20,
+            productsCount: 0
         };
+
+        this.top = 0;
     }
 
-    handleSortBy = (sort) => {
+    componentDidMount() {
         const { dispatch } = this.props;
-        console.log(sort);
+        dispatch(productsRequest({ withLoading: true }));
+
+        this.addScrollListener();
+
+    }
+
+    addScrollListener() {
+        window.addEventListener('scroll', this.fetchMoreData, false);
+    }
+
+    removeScrollListener() {
+        window.removeEventListener('scroll', this.fetchMoreData, false);
+    }
+
+    fetchMoreData() {
+        console.log('fetchMoreData');
+
+        // const { dispatch } = this.props;
+        // if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+        //     this.removeScrollListener();
+        // }
+
+        // this.setState({ limit: this.state.limit + 20 }, () => {
+        //     dispatch(productsRequest({ limit: this.state.limit }));
+        // });
+
+        // if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 20) {
+        //     console.log('hello very bottom!');
+        // }
+    }
+
+    renderData() {
+        console.log('renderData');
+    }
+
+    handleSort = (sort) => {
+        const { dispatch } = this.props;
         dispatch(productsRequest({ sort }));
     }
 
@@ -40,9 +75,9 @@ class App extends Component {
                     <img className="ad" alt="" src={`${baseUrl}/ad/?r='${Math.floor(Math.random()*1000)}`}/>
                 </header>
                 <section className="filter-buttons">
-                    <button onClick={() => this.handleSortBy('size')}>Sort by size</button>
-                    <button onClick={() => this.handleSortBy('price')}>Sort by price</button>
-                    <button onClick={() => this.handleSortBy('id')}>Sort by id</button>
+                    <button onClick={() => this.handleSort('size')}>Sort by size</button>
+                    <button onClick={() => this.handleSort('price')}>Sort by price</button>
+                    <button onClick={() => this.handleSort('id')}>Sort by id</button>
                 </section>
                 <section className="products">
                     {
