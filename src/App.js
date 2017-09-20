@@ -6,6 +6,8 @@ import { Provider, connect } from 'react-redux';
 import store from './store';
 import { productsRequest } from './actions';
 
+import { Product } from './components';
+
 
 class App extends Component {
     componentDidMount() {
@@ -29,9 +31,7 @@ class App extends Component {
                     {
                         loading ?
                             <h1>Loading...</h1> :
-                            products.map(product => (
-                                <h1 key={product.id}>{product.face}</h1>
-                            ))
+                            products.map(product => <Product key={product.id} {...product} />)
                     }
                 </section>
             </div>
